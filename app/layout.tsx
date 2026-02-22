@@ -9,9 +9,45 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Schism Series - Character Database',
-  description: 'Schism seris yang hobi revisi alur.',
+  title: {
+    default: 'Schism Series - Character Database',
+    template: '%s | Schism Series',
+  },
+  description: 'Database karakter untuk Schism Series. Berisi informasi lengkap tentang karakter, power system (Astral Energy, Astral Technique), Divine Conditions, 5 Primordium Families, dan 4 Omniverses.',
   generator: 'v0.app',
+  keywords: [
+    'Schism Series', 'character database', 'Schism Termina', 'Schism The Beginning', 'Schism Hell',
+    'Astral Energy', 'Astral Technique', 'Divine Conditions', 'Primordium',
+    'Vennamyseus', 'Remeryllus', 'Asariya', 'Lea ven Belladonna', 'Leo ven Belleum',
+    'Avoro ven Belleum', 'Ars ven Belleum', 'Artemys ven Belladonna',
+    'Remulus ven Belladonna', 'Athena ven Belladonna', 'Anne',
+    'Zero-Entropy', 'Primal-Axiomatic', 'Axiomatic', 'Morphogen',
+    'OmniVenna', 'OmniEvitheia', 'OmniRion', 'OmniSera',
+  ],
+  authors: [{ name: 'Schism Series Author' }],
+  openGraph: {
+    title: 'Schism Series - Character Database',
+    description: 'Database karakter lengkap untuk Schism Series. Profil karakter, power system, divine conditions, primordium families, dan omniverses.',
+    type: 'website',
+    locale: 'id_ID',
+    siteName: 'Schism Series Character Database',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Schism Series - Character Database',
+    description: 'Database karakter lengkap untuk Schism Series.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   icons: {
     icon: [
       {
@@ -29,6 +65,9 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon.png',
   },
+  other: {
+    'ai-content-declaration': 'This website contains fictional character data from the Schism Series. All content is AI-readable. See /llms.txt for structured content.',
+  },
 }
 
 export default function RootLayout({
@@ -37,7 +76,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <body className={`font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
