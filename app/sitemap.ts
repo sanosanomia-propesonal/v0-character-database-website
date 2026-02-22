@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next"
 import { seriesData } from "@/lib/character-data"
 
-const BASE_URL = "https://v0-character-database-website.vercel.app"
+const BASE_URL = "https://schism-base.vercel.app"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes: MetadataRoute.Sitemap = [

@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const character = series?.characters.find((c) => c.id === characterId)
   if (!series || !character) return { title: "Character Not Found" }
 
-  const title = `${character.name} - ${series.title} | Schism Series`
+  const title = `${character.name} - ${series.title} | Schism Base`
   const description = character.details.fullBio
 
   return {

@@ -19,17 +19,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!series) return { title: "Series Not Found" }
 
   return {
-    title: `${series.title} - Character Database | Schism Series`,
+    title: `${series.title} | Schism Base`,
     description: series.description,
     openGraph: {
-      title: `${series.title} - Schism Series Character Database`,
+      title: `${series.title} | Schism Base`,
       description: series.description,
       images: [{ url: series.coverImage, width: 1200, height: 630, alt: series.title }],
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${series.title} - Schism Series`,
+      title: `${series.title} | Schism Base`,
       description: series.description,
       images: [series.coverImage],
     },

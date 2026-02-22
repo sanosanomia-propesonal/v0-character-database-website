@@ -3,7 +3,7 @@ import { seriesData } from "@/lib/character-data"
 export async function GET() {
   const lines: string[] = []
 
-  lines.push("# Schism Series - Character Database (Full Content)")
+  lines.push("# Schism Base (Full Content)")
   lines.push("")
   lines.push("> This is the complete, machine-readable version of all content on this website.")
   lines.push("> Language: Bahasa Indonesia (ID)")

@@ -5,7 +5,7 @@ export default function Home() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Schism Series - Character Database",
+    name: "Schism Base",
     description:
       "Database karakter untuk Schism Series, berisi informasi lengkap tentang karakter, power system, divine conditions, primordium families, dan omniverses.",
     url: "/",
@@ -38,7 +38,7 @@ export default function Home() {
       {/* SSR-readable content for AI crawlers */}
       <noscript>
         <main>
-          <h1>Schism Series - Character Database</h1>
+          <h1>Schism Base</h1>
           <p>
             Database karakter untuk Schism Series, berisi informasi lengkap tentang karakter, power
             system, divine conditions, primordium families, dan omniverses.
@@ -75,7 +75,7 @@ export default function Home() {
       {/* Semantic HTML visible to all crawlers */}
       <div className="sr-only" aria-hidden="false">
         <main>
-          <h1>Schism Series - Character Database</h1>
+          <h1>Schism Base</h1>
           <p>
             Database karakter lengkap untuk Schism Series. Berisi informasi detail tentang setiap
             karakter, power system (Astral Energy, Astral Technique), Divine Conditions, 5

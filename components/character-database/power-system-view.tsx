@@ -161,12 +161,12 @@ export function PowerSystemView({ onBack }: PowerSystemViewProps) {
       <header className="bg-gradient-to-r from-slate-800 to-slate-700 py-6 px-4">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-              <Zap className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center">
+              <img src="/favicon.png" alt="Schism Base" className="w-10 h-10 object-cover" />
             </div>
             <div>
               <h1 className="text-white font-bold text-lg">POWER SYSTEM</h1>
-              <p className="text-white/80 text-sm">Schism Series</p>
+              <p className="text-white/80 text-sm">Schism Base</p>
             </div>
           </div>
           

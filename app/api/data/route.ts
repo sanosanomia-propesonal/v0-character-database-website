@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 
 export async function GET() {
   const data = {
-    name: "Schism Series - Character Database",
+    name: "Schism Base",
     description:
       "Database karakter untuk Schism Series, berisi informasi lengkap tentang karakter, power system, divine conditions, primordium families, dan omniverses.",
     language: "id",

@@ -3,7 +3,7 @@ import { seriesData } from "@/lib/character-data"
 export async function GET() {
   const lines: string[] = []
 
-  lines.push("# Schism Series - Character Database")
+  lines.push("# Schism Base")
   lines.push("")
   lines.push("> Database karakter untuk Schism Series. Berisi informasi lengkap tentang karakter, power system, divine conditions, primordium families, dan omniverses.")
   lines.push("")
