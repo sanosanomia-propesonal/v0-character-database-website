@@ -24,9 +24,9 @@ export function HomeView({ series, onSelectSeries, onNavigateToPowerSystem }: Ho
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-900 transition-colors duration-300">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-900 transition-colors duration-300" role="main">
       {/* Header - Monochrome */}
-      <header className="bg-gradient-to-r from-slate-800 to-slate-700 py-6 px-4">
+      <header className="bg-gradient-to-r from-slate-800 to-slate-700 py-6 px-4" role="banner">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
@@ -68,7 +68,7 @@ export function HomeView({ series, onSelectSeries, onNavigateToPowerSystem }: Ho
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-12" aria-label="Series Selection">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-2 animate-fade-in-up">
             SCHISM SERIES
