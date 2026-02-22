@@ -66,6 +66,9 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon.png',
   },
+  verification: {
+    google: 'snyNWth_xlkHUx0bEMH4S3gdX8loNz0XfQjc_lQ2N3A',
+  },
   other: {
     'ai-content-declaration': 'Schism Base - This website contains fictional character data from the Schism Series. All content is AI-readable. See /llms.txt for structured content.',
   },
