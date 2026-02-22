@@ -2,11 +2,11 @@ import type { Metadata } from "next"
 import { PowerSystemPageClient } from "@/components/character-database/power-system-page-client"
 
 export const metadata: Metadata = {
-  title: "Power System - Schism Series",
+  title: "Power System | Schism Base",
   description:
     "Learn about the power system in Schism Series: Astral Energy, Astral Technique, Divine Conditions (Zero-Entropy, Primal-Axiomatic, Axiomatic, Morphogen), the 5 Primordium Families, and the 4 Omniverses.",
   openGraph: {
-    title: "Power System - Schism Series",
+    title: "Power System | Schism Base",
     description:
       "Complete guide to the Schism Series power system: Astral Energy, Astral Technique, Divine Conditions, Primordium Families, and Omniverses.",
     type: "article",
@@ -75,7 +75,7 @@ export default function PowerSystemPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    name: "Schism Series Power System",
+    name: "Schism Base - Power System",
     description:
       "Complete guide to the power system in Schism Series including Astral Energy, Astral Technique, Divine Conditions, Primordium Families, and Omniverses.",
     articleSection: [

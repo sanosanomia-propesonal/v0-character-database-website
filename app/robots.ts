@@ -44,6 +44,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://v0-character-database-website.vercel.app/sitemap.xml",
+    sitemap: "https://schism-base.vercel.app/sitemap.xml",
   }
 }

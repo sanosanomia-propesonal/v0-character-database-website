@@ -29,24 +29,11 @@ export function HomeView({ series, onSelectSeries, onNavigateToPowerSystem }: Ho
       <header className="bg-gradient-to-r from-slate-800 to-slate-700 py-6 px-4" role="banner">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                />
-              </svg>
+            <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center">
+              <img src="/favicon.png" alt="Schism Base" className="w-10 h-10 object-cover" />
             </div>
             <div>
-              <h1 className="text-white font-bold text-lg">SCHISM SERIES</h1>
-              <p className="text-white/80 text-sm">Character Database</p>
+              <h1 className="text-white font-bold text-lg">SCHISM BASE</h1>
             </div>
           </div>
           
@@ -71,7 +58,7 @@ export function HomeView({ series, onSelectSeries, onNavigateToPowerSystem }: Ho
       <main className="container mx-auto px-4 py-12" aria-label="Series Selection">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-2 animate-fade-in-up">
-            SCHISM SERIES
+            SCHISM BASE
           </h2>
           <h3 className="text-2xl md:text-3xl font-bold text-slate-700 dark:text-slate-300 mb-4 animate-fade-in-up-delay">
             CHARACTER DATA
