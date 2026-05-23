@@ -1,7 +1,7 @@
 "use client"
 
 import { Series } from "@/lib/character-data"
-import { ChevronRight, Zap, BookOpen } from "lucide-react"
+import { ChevronRight, Zap } from "lucide-react"
 import { useState } from "react"
 import { ThemeToggle } from "@/components/theme-toggle"
 
@@ -13,7 +13,6 @@ interface HomeViewProps {
 
 export function HomeView({ series, onSelectSeries, onNavigateToPowerSystem }: HomeViewProps) {
   const [clickedSeriesId, setClickedSeriesId] = useState<string | null>(null)
-  const [isMangaButtonPressed, setIsMangaButtonPressed] = useState(false)
 
   const handleSeriesClick = (seriesId: string) => {
     setClickedSeriesId(seriesId)
@@ -63,27 +62,8 @@ export function HomeView({ series, onSelectSeries, onNavigateToPowerSystem }: Ho
           <h3 className="text-2xl md:text-3xl font-bold text-slate-700 dark:text-slate-300 mb-4 animate-fade-in-up-delay">
             CHARACTER DATA
           </h3>
-          
-          {/* Baca Manga Button */}
-          <div className="flex justify-center mb-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-            <a
-              href="https://v0-manga-schism.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              onMouseDown={() => setIsMangaButtonPressed(true)}
-              onMouseUp={() => setIsMangaButtonPressed(false)}
-              onMouseLeave={() => setIsMangaButtonPressed(false)}
-              className={`group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 ${
-                isMangaButtonPressed ? "scale-95 shadow-md" : "scale-100"
-              }`}
-            >
-              <BookOpen className="w-5 h-5 group-hover:rotate-12 transition-transform duration-200" />
-              <span>Baca Manga</span>
-              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
-          </div>
 
-          <p className="text-black dark:text-slate-400 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>Pilih series wok:</p>
+          <p className="text-black dark:text-slate-400 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>Pilih series wok:</p>
         </div>
 
         {/* Series Cards Grid */}
