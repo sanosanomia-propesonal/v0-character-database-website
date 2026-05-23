@@ -1,7 +1,7 @@
 "use client"
 
 import { Character, Series, DivineCondition } from "@/lib/character-data"
-import { ArrowLeft, Calendar, Images, Quote, Ruler, Scale, Sparkles, User, Sword, Wind, Shield, Brain, Zap, X, Atom } from "lucide-react"
+import { ArrowLeft, X, Atom } from "lucide-react"
 import { useState, useRef, useCallback, useEffect } from "react"
 import { ThemeToggle } from "@/components/theme-toggle"
 
@@ -73,44 +73,30 @@ export function CharacterView({
 
   const stats = [
     {
-      icon: Calendar,
       label: "Usia",
       value: `${character.details.age} tahun`,
     },
     {
-      icon: User,
       label: "Gender",
       value: character.details.gender,
     },
     {
-      icon: Ruler,
       label: "Tinggi",
       value: `${character.details.height} cm`,
     },
     {
-      icon: Scale,
       label: "Berat",
       value: `${character.details.weight} kg`,
     },
   ]
 
-  const statCap = series.statCap || 100
-
   const advancedStats = character.details.stats ? [
-    { icon: Sword, label: "Strength", value: character.details.stats.strength },
-    { icon: Wind, label: "Agility", value: character.details.stats.agility },
-    { icon: Shield, label: "Resilience", value: character.details.stats.resilience },
-    { icon: Brain, label: "Intelligence", value: character.details.stats.intelligence },
-    { icon: Zap, label: "Astral Technique", value: character.details.stats.astralTechnique },
+    { label: "Strength", value: character.details.stats.strength },
+    { label: "Agility", value: character.details.stats.agility },
+    { label: "Resilience", value: character.details.stats.resilience },
+    { label: "Intelligence", value: character.details.stats.intelligence },
+    { label: "Astral Technique", value: character.details.stats.astralTechnique },
   ] : []
-
-  const getStatBarColor = (value: number, cap: number) => {
-    const percentage = (value / cap) * 100
-    if (percentage >= 90) return "bg-gradient-to-r from-amber-500 to-yellow-400"
-    if (percentage >= 70) return "bg-gradient-to-r from-emerald-500 to-green-400"
-    if (percentage >= 50) return "bg-gradient-to-r from-blue-500 to-cyan-400"
-    return "bg-gradient-to-r from-slate-500 to-slate-400"
-  }
 
   const formatStatValue = (value: number) => {
     if (value >= 1000) {
@@ -217,11 +203,6 @@ export function CharacterView({
                 key={index}
                 className="bg-slate-50 dark:bg-slate-700 rounded-xl p-4 text-center"
               >
-                <div
-                  className={`w-10 h-10 ${themeClasses.light} rounded-lg flex items-center justify-center mx-auto mb-3`}
-                >
-                  <stat.icon className={`w-5 h-5 ${themeClasses.accent}`} />
-                </div>
                 <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">{stat.label}</p>
                 <p className="text-slate-800 dark:text-slate-100 font-semibold">{stat.value}</p>
               </div>
@@ -231,14 +212,7 @@ export function CharacterView({
 
         {/* Divine Conditions Section */}
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 md:p-8 mt-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div
-              className={`w-10 h-10 ${themeClasses.light} rounded-lg flex items-center justify-center`}
-            >
-              <Atom className={`w-5 h-5 ${themeClasses.accent}`} />
-            </div>
-            <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">Divine Conditions</h3>
-          </div>
+          <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-6">Divine Conditions</h3>
 
           {character.details.divineCondition ? (
             <>
@@ -301,16 +275,11 @@ export function CharacterView({
         {/* Quote Section */}
         {character.details.quote && (
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 md:p-8 mt-8">
-            <div className="flex items-start gap-4">
-              <div className={`w-12 h-12 ${themeClasses.light} rounded-full flex items-center justify-center shrink-0`}>
-                <Quote className={`w-6 h-6 ${themeClasses.accent}`} />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Quote</h3>
-                <p className="text-slate-600 dark:text-slate-300 italic text-lg leading-relaxed">
-                  &quot;{character.details.quote}&quot;
-                </p>
-              </div>
+            <div>
+              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Quote</h3>
+              <p className="text-slate-600 dark:text-slate-300 italic text-lg leading-relaxed">
+                &quot;{character.details.quote}&quot;
+              </p>
             </div>
           </div>
         )}
@@ -318,16 +287,11 @@ export function CharacterView({
         {/* Special Ability Section */}
         {character.details.specialAbility && (
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 md:p-8 mt-8">
-            <div className="flex items-start gap-4">
-              <div className={`w-12 h-12 ${themeClasses.light} rounded-full flex items-center justify-center shrink-0`}>
-                <Sparkles className={`w-6 h-6 ${themeClasses.accent}`} />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Kemampuan Spesial</h3>
-                <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                  {character.details.specialAbility}
-                </p>
-              </div>
+            <div>
+              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Kemampuan Spesial</h3>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                {character.details.specialAbility}
+              </p>
             </div>
           </div>
         )}
@@ -339,31 +303,18 @@ export function CharacterView({
               Informasi Lanjut
             </h3>
 
-            <div className="space-y-5">
-              {advancedStats.map((stat, index) => {
-                const percentage = Math.min((stat.value / statCap) * 100, 100)
-                return (
-                  <div key={index} className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 ${themeClasses.light} rounded-lg flex items-center justify-center`}>
-                          <stat.icon className={`w-4 h-4 ${themeClasses.accent}`} />
-                        </div>
-                        <span className="text-slate-700 dark:text-slate-300 font-medium">{stat.label}</span>
-                      </div>
-                      <span className="text-slate-800 dark:text-slate-100 font-bold">
-                        {formatStatValue(stat.value)}/{formatStatValue(statCap)}
-                      </span>
-                    </div>
-                    <div className="h-3 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                      <div 
-                        className={`h-full rounded-full transition-all duration-700 ease-out ${getStatBarColor(stat.value, statCap)}`}
-                        style={{ width: `${percentage}%` }}
-                      />
-                    </div>
-                  </div>
-                )
-              })}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+              {advancedStats.map((stat, index) => (
+                <div
+                  key={index}
+                  className="bg-slate-50 dark:bg-slate-700 rounded-xl p-4 text-center"
+                >
+                  <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">{stat.label}</p>
+                  <p className="text-slate-800 dark:text-slate-100 font-bold text-lg">
+                    {formatStatValue(stat.value)}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -416,14 +367,7 @@ export function CharacterView({
         {/* Gallery Section */}
         {character.details.gallery && character.details.gallery.length > 0 && (
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 md:p-8 mt-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div
-                className={`w-10 h-10 ${themeClasses.light} rounded-lg flex items-center justify-center`}
-              >
-                <Images className={`w-5 h-5 ${themeClasses.accent}`} />
-              </div>
-              <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">Galeri</h3>
-            </div>
+            <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-6">Galeri</h3>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {character.details.gallery.map((image, index) => (
