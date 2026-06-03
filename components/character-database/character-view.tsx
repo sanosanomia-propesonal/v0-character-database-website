@@ -1,30 +1,25 @@
 "use client"
 
 import { Character, Series, DivineCondition } from "@/lib/character-data"
-import { ArrowLeft, X, Atom } from "lucide-react"
+import { ArrowLeft, X } from "lucide-react"
 import { useState, useRef, useCallback, useEffect } from "react"
-import { ThemeToggle } from "@/components/theme-toggle"
 
-const DIVINE_CONDITION_INFO: Record<DivineCondition, { title: string; description: string; color: string }> = {
+const DIVINE_CONDITION_INFO: Record<DivineCondition, { title: string; description: string }> = {
   "Zero-Entropy": {
     title: "Zero-Entropy",
     description: "Hukum fisik dimana penderitanya tidak memiliki Astral Energy dan tidak akan mampu menguasai Astral Tecnique, sebagai gantinya fisik penderita akan absolut, tidak dapat ditarget Astral Technique dengan efek 'pasti-kena'.",
-    color: "bg-gradient-to-r from-amber-500 to-yellow-400",
   },
   "Primal-Axiomatic": {
     title: "Primal-Axiomatic",
     description: "Hukum Ilahi yang hanya terdapat pada primordite khusus yang menjadi akar sebuah Astral Energy dan Astral Technique. Penciptaan, Efisiensi, pengolahan Energy dan Output teknik dalam level tak terbatas.",
-    color: "bg-gradient-to-r from-violet-600 to-purple-500",
   },
   "Axiomatic": {
     title: "Axiomatic",
     description: "Hukum Ilahi berupa efisiensi, pengolahan Energy dan output teknik yang dapat meningkat tanpa batas. Sangat mengikat fisiologis dan mental penderita. Hanya akan ada SATU penderita hingga penderita terkait telah tiada",
-    color: "bg-gradient-to-r from-blue-600 to-cyan-500",
   },
   "Morphogen": {
     title: "Morphogen",
     description: "Hukum Ilahi yang mengizinkan transformasi dan pembentukan entitas ciptaannya sendiri, ini bergantung pada Astral Energy mereka. Hanya akan ada SATU penderita hingga penderita terkait telah tiada.",
-    color: "bg-gradient-to-r from-emerald-500 to-teal-400",
   },
 }
 
@@ -35,7 +30,7 @@ interface CharacterViewProps {
   onSelectCharacter: (characterId: string) => void
 }
 
-const CHARACTER_CLICK_DELAY = 300 // ms
+const CHARACTER_CLICK_DELAY = 300
 
 export function CharacterView({
   character,
@@ -48,7 +43,7 @@ export function CharacterView({
   const [showDivineModal, setShowDivineModal] = useState<DivineCondition | null>(null)
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  // Reset gallery and modal state when character changes
+  // Reset state when character changes
   useEffect(() => {
     setSelectedGalleryImage(null)
     setShowDivineModal(null)
@@ -56,7 +51,6 @@ export function CharacterView({
   }, [character.id])
 
   const otherCharacters = series.characters.filter((c) => c.id !== character.id)
-  const themeClasses = series.themeColors
 
   const handleCharacterClick = useCallback((characterId: string) => {
     if (clickTimeoutRef.current) {
@@ -71,33 +65,6 @@ export function CharacterView({
     }, CHARACTER_CLICK_DELAY)
   }, [onSelectCharacter])
 
-  const stats = [
-    {
-      label: "Usia",
-      value: `${character.details.age} tahun`,
-    },
-    {
-      label: "Gender",
-      value: character.details.gender,
-    },
-    {
-      label: "Tinggi",
-      value: `${character.details.height} cm`,
-    },
-    {
-      label: "Berat",
-      value: `${character.details.weight} kg`,
-    },
-  ]
-
-  const advancedStats = character.details.stats ? [
-    { label: "Strength", value: character.details.stats.strength },
-    { label: "Agility", value: character.details.stats.agility },
-    { label: "Resilience", value: character.details.stats.resilience },
-    { label: "Intelligence", value: character.details.stats.intelligence },
-    { label: "Astral Technique", value: character.details.stats.astralTechnique },
-  ] : []
-
   const formatStatValue = (value: number) => {
     if (value >= 1000) {
       return value.toLocaleString()
@@ -105,226 +72,220 @@ export function CharacterView({
     return value.toString()
   }
 
+  // Get series badge info
+  const getSeriesBadge = () => {
+    switch (series.id) {
+      case "schism-termina":
+        return { label: "MAIN TIMELINE", color: "bg-emerald-600" }
+      case "schism-the-beginning":
+        return { label: "PREQUEL", color: "bg-amber-600" }
+      case "schism-hell":
+        return { label: "MYSTERY", color: "bg-red-600" }
+      default:
+        return { label: "SERIES", color: "bg-zinc-600" }
+    }
+  }
+
+  const badge = getSeriesBadge()
+
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
-      {/* Header */}
-      <header
-        className={`bg-gradient-to-r ${themeClasses.primary} py-6 px-4`}
-      >
-        <div className="container mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                />
-              </svg>
+    <div className="min-h-screen bg-[#0a0a0b]">
+      {/* Navbar */}
+      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#0a0a0b]/95 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-x-3">
+              <span onClick={onBack} className="font-bold text-2xl tracking-[-1.5px] cursor-pointer text-zinc-100">SCHISM BASE</span>
+              <span className="text-[10px] px-2 py-0.5 rounded bg-white/5 text-white/40 font-mono tracking-widest">v2</span>
             </div>
-            <div>
-              <h1 className="text-white font-bold text-lg">{series.title}</h1>
-              <p className="text-white/80 text-sm">Character Profile</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={onBack}
-              className="flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg"
+
+            <button 
+              onClick={onBack} 
+              className="text-sm flex items-center gap-x-2 px-5 py-2.5 rounded-full border border-white/10 hover:bg-white/5 text-zinc-300"
             >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Kembali</span>
+              <ArrowLeft className="w-4 h-4 mr-1" /> Kembali ke Series
             </button>
-            <ThemeToggle />
           </div>
         </div>
-      </header>
+      </nav>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        {/* Character Profile Card */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg overflow-hidden mb-8">
-          <div className="flex flex-col md:flex-row">
-            {/* Character Image */}
-            <div className="md:w-1/3 relative">
-              <div className="aspect-square md:aspect-auto md:h-full bg-gradient-to-br from-slate-700 to-slate-800">
-                <img
-                  src={character.thumbnailImage || "/placeholder.svg"}
-                  alt={character.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+      {/* Character Detail - Card Style */}
+      <div className="max-w-3xl mx-auto px-8 py-10">
+        <div className="bg-zinc-900 border border-white/10 rounded-3xl overflow-hidden">
+          <div className="p-8 md:p-10">
+            {/* Header */}
+            <div className="mb-8">
+              <div className="text-xs text-white/50 mb-1">{series.title}</div>
+              <h3 className="text-3xl font-bold tracking-tight text-zinc-100">{character.name}</h3>
+              <div className="inline-block mt-2 px-3 py-0.5 text-xs rounded-full bg-white/10 text-white/80">{character.role}</div>
             </div>
 
-            {/* Character Info */}
-            <div className="md:w-2/3 p-6 md:p-8 flex flex-col justify-center">
-              <div className="mb-4">
-                <span
-                  className={`inline-block px-3 py-1 text-xs font-medium rounded-full ${
-                    character.role === "Protagonist"
-                      ? `${themeClasses.secondary} text-white`
-                      : character.role === "Alomani"
-                      ? "bg-red-500 text-white"
-                      : character.role === "Antagonist"
-                      ? "bg-purple-700 text-white"
-                      : "bg-slate-500 text-white"
-                  }`}
-                >
-                  {character.role}
-                </span>
+            <div className="grid md:grid-cols-5 gap-10">
+              {/* Image */}
+              <div className="md:col-span-2">
+                <div className="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 bg-zinc-950">
+                  <img 
+                    src={character.thumbnailImage || "/placeholder.svg"} 
+                    alt={character.name} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                
+                {/* Badges */}
+                <div className="mt-5 flex flex-wrap gap-2">
+                  <div className="px-3 py-1 text-xs rounded-full border border-white/15 text-white/70">Astral Energy</div>
+                  {character.details.divineCondition && (
+                    <div className="px-3 py-1 text-xs rounded-full border border-white/15 text-white/70">Divine Condition</div>
+                  )}
+                </div>
               </div>
 
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-4">
-                {character.name}
-              </h2>
-
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                {character.details.fullBio}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats Card */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 md:p-8">
-          <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-6">
-            Informasi Dasar
-          </h3>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {stats.map((stat, index) => (
-              <div
-                key={index}
-                className="bg-slate-50 dark:bg-slate-700 rounded-xl p-4 text-center"
-              >
-                <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">{stat.label}</p>
-                <p className="text-slate-800 dark:text-slate-100 font-semibold">{stat.value}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Divine Conditions Section */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 md:p-8 mt-8">
-          <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-6">Divine Conditions</h3>
-
-          {character.details.divineCondition ? (
-            <>
-              <div className="flex flex-wrap gap-3">
-                {(["Zero-Entropy", "Primal-Axiomatic", "Axiomatic", "Morphogen"] as DivineCondition[]).map((condition) => {
-                  const isActive = character.details.divineCondition === condition
-                  const info = DIVINE_CONDITION_INFO[condition]
-                  return (
-                    <button
-                      key={condition}
-                      onClick={() => setShowDivineModal(condition)}
-                      className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
-                        isActive
-                          ? `${info.color} text-white shadow-lg scale-105`
-                          : "bg-slate-100 text-slate-500 hover:bg-slate-200"
-                      }`}
-                    >
-                      {condition}
-                    </button>
-                  )
-                })}
-              </div>
-              <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
-                Klik pada kondisi untuk melihat penjelasan
-              </p>
-
-              {/* Inline Divine Condition Info */}
-              {showDivineModal && (
-                <div className="mt-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
-                  <div className={`${DIVINE_CONDITION_INFO[showDivineModal].color} rounded-xl p-6`}>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <Atom className="w-7 h-7 text-white" />
-                        <h4 className="text-lg font-bold text-white">
-                          {DIVINE_CONDITION_INFO[showDivineModal].title}
-                        </h4>
-                      </div>
-                      <button
-                        onClick={() => setShowDivineModal(null)}
-                        className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
-                      >
-                        <X className="w-5 h-5 text-white" />
-                      </button>
+              {/* Info */}
+              <div className="md:col-span-3">
+                <div className="text-[15px] leading-relaxed text-white/85">
+                  <p>{character.details.fullBio}</p>
+                </div>
+                
+                {/* Extra Info Section */}
+                <div className="mt-8 pt-8 border-t border-white/10">
+                  <div className="detail-label mb-4">INFORMASI DASAR</div>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="text-white/50">Usia</span>
+                      <p className="text-white/90 font-medium">{character.details.age.toLocaleString()} tahun</p>
                     </div>
-                    <p className="text-white/90 leading-relaxed">
-                      {DIVINE_CONDITION_INFO[showDivineModal].description}
-                    </p>
+                    <div>
+                      <span className="text-white/50">Gender</span>
+                      <p className="text-white/90 font-medium">{character.details.gender}</p>
+                    </div>
+                    <div>
+                      <span className="text-white/50">Tinggi</span>
+                      <p className="text-white/90 font-medium">{character.details.height} cm</p>
+                    </div>
+                    <div>
+                      <span className="text-white/50">Berat</span>
+                      <p className="text-white/90 font-medium">{character.details.weight} kg</p>
+                    </div>
                   </div>
                 </div>
-              )}
-            </>
-          ) : (
-            <div className="text-center py-4">
-              <span className="text-3xl font-bold text-slate-300 dark:text-slate-600">-</span>
-              <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">Tidak memiliki Divine Condition</p>
+
+                {/* Divine Condition */}
+                {character.details.divineCondition && (
+                  <div className="mt-8 pt-8 border-t border-white/10">
+                    <div className="detail-label mb-4">DIVINE CONDITION</div>
+                    <button
+                      onClick={() => setShowDivineModal(character.details.divineCondition!)}
+                      className="px-4 py-2 rounded-lg bg-gradient-to-r from-rose-900 to-purple-900 text-white text-sm font-medium hover:from-rose-800 hover:to-purple-800 transition-all"
+                    >
+                      {character.details.divineCondition}
+                    </button>
+                    <p className="mt-3 text-xs text-white/50">Klik untuk melihat penjelasan</p>
+                  </div>
+                )}
+
+                {/* Quote */}
+                {character.details.quote && (
+                  <div className="mt-8 pt-8 border-t border-white/10">
+                    <div className="detail-label mb-4">QUOTE</div>
+                    <p className="text-white/80 italic text-lg leading-relaxed">
+                      &quot;{character.details.quote}&quot;
+                    </p>
+                  </div>
+                )}
+
+                {/* Special Ability */}
+                {character.details.specialAbility && (
+                  <div className="mt-8 pt-8 border-t border-white/10">
+                    <div className="detail-label mb-4">KEMAMPUAN SPESIAL</div>
+                    <p className="text-white/80">{character.details.specialAbility}</p>
+                  </div>
+                )}
+
+                {/* Advanced Stats */}
+                {character.details.stats && (
+                  <div className="mt-8 pt-8 border-t border-white/10">
+                    <div className="detail-label mb-4">INFORMASI LANJUT</div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <span className="text-white/50">Strength</span>
+                        <p className="text-white/90 font-medium">{formatStatValue(character.details.stats.strength)}</p>
+                      </div>
+                      <div>
+                        <span className="text-white/50">Agility</span>
+                        <p className="text-white/90 font-medium">{formatStatValue(character.details.stats.agility)}</p>
+                      </div>
+                      <div>
+                        <span className="text-white/50">Resilience</span>
+                        <p className="text-white/90 font-medium">{formatStatValue(character.details.stats.resilience)}</p>
+                      </div>
+                      <div>
+                        <span className="text-white/50">Intelligence</span>
+                        <p className="text-white/90 font-medium">{formatStatValue(character.details.stats.intelligence)}</p>
+                      </div>
+                      <div>
+                        <span className="text-white/50">Astral Technique</span>
+                        <p className="text-white/90 font-medium">{formatStatValue(character.details.stats.astralTechnique)}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          )}
+          </div>
+          
+          {/* Footer */}
+          <div className="border-t border-white/10 px-8 md:px-10 py-5 bg-black/30 flex justify-end gap-x-3 text-sm">
+            <button onClick={onBack} className="px-6 py-2.5 text-white/70 hover:text-white">Kembali</button>
+          </div>
         </div>
 
-        {/* Quote Section */}
-        {character.details.quote && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 md:p-8 mt-8">
-            <div>
-              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Quote</h3>
-              <p className="text-slate-600 dark:text-slate-300 italic text-lg leading-relaxed">
-                &quot;{character.details.quote}&quot;
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Special Ability Section */}
-        {character.details.specialAbility && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 md:p-8 mt-8">
-            <div>
-              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Kemampuan Spesial</h3>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                {character.details.specialAbility}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Advanced Stats - Informasi Lanjut */}
-        {character.details.stats && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 md:p-8 mt-8">
-            <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-6">
-              Informasi Lanjut
-            </h3>
-
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              {advancedStats.map((stat, index) => (
-                <div
+        {/* Gallery Section */}
+        {character.details.gallery && character.details.gallery.length > 0 && (
+          <div className="mt-8 bg-zinc-900 border border-white/10 rounded-3xl p-8">
+            <div className="detail-label mb-6">GALERI</div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {character.details.gallery.map((image, index) => (
+                <button
                   key={index}
-                  className="bg-slate-50 dark:bg-slate-700 rounded-xl p-4 text-center"
+                  onClick={() => setSelectedGalleryImage(selectedGalleryImage === image ? null : image)}
+                  className={`group relative aspect-square rounded-xl overflow-hidden bg-zinc-950 border border-white/10 transition-all duration-300 hover:border-white/30 ${
+                    selectedGalleryImage === image ? "ring-2 ring-rose-500 scale-[0.98]" : "hover:scale-[1.02]"
+                  }`}
                 >
-                  <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">{stat.label}</p>
-                  <p className="text-slate-800 dark:text-slate-100 font-bold text-lg">
-                    {formatStatValue(stat.value)}
-                  </p>
-                </div>
+                  <img
+                    src={image || "/placeholder.svg"}
+                    alt={`${character.name} gallery ${index + 1}`}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                </button>
               ))}
             </div>
+
+            {/* Image Preview */}
+            {selectedGalleryImage && (
+              <div className="mt-6">
+                <div className="relative rounded-xl overflow-hidden bg-zinc-950">
+                  <img
+                    src={selectedGalleryImage}
+                    alt="Gallery preview"
+                    className="w-full h-auto max-h-[70vh] object-contain mx-auto"
+                  />
+                </div>
+                <button
+                  onClick={() => setSelectedGalleryImage(null)}
+                  className="mt-4 mx-auto block text-sm text-rose-400 hover:text-rose-300 transition-colors"
+                >
+                  Tutup preview
+                </button>
+              </div>
+            )}
           </div>
         )}
 
-        {/* Character Shortcuts */}
+        {/* Other Characters */}
         {otherCharacters.length > 0 && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 md:p-8 mt-8">
-            <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-6 text-center">
-              Karakter Lainnya
-            </h3>
+          <div className="mt-8 bg-zinc-900 border border-white/10 rounded-3xl p-8">
+            <div className="detail-label mb-6 text-center">KARAKTER LAINNYA</div>
             <div className="flex flex-wrap justify-center gap-4">
               {otherCharacters.map((otherChar) => (
                 <button
@@ -336,26 +297,14 @@ export function CharacterView({
                       : "hover:scale-105"
                   }`}
                 >
-                  <div
-                    className={`w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-3 border-slate-200 dark:border-slate-600 transition-all duration-300 shadow-md group-hover:shadow-lg ${
-                      clickedCharacterId === otherChar.id
-                        ? "ring-4 ring-opacity-50"
-                        : ""
-                    }`}
-                  >
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-white/20 transition-all duration-300 group-hover:border-rose-500/50">
                     <img
                       src={otherChar.thumbnailImage || "/placeholder.svg"}
                       alt={otherChar.name}
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <span
-                    className={`mt-2 text-xs md:text-sm text-slate-600 dark:text-slate-400 font-medium transition-colors max-w-20 truncate ${
-                      clickedCharacterId === otherChar.id
-                        ? themeClasses.accent
-                        : ""
-                    }`}
-                  >
+                  <span className="mt-2 text-xs md:text-sm text-white/60 font-medium max-w-20 truncate group-hover:text-white/90">
                     {otherChar.name}
                   </span>
                 </button>
@@ -363,72 +312,42 @@ export function CharacterView({
             </div>
           </div>
         )}
+      </div>
 
-        {/* Gallery Section */}
-        {character.details.gallery && character.details.gallery.length > 0 && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 md:p-8 mt-8">
-            <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-6">Galeri</h3>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {character.details.gallery.map((image, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedGalleryImage(selectedGalleryImage === image ? null : image)}
-                  className={`group relative aspect-square rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-700 transition-all duration-300 hover:shadow-lg ${
-                    selectedGalleryImage === image 
-                      ? "ring-4 ring-offset-2 dark:ring-offset-slate-800 scale-[0.98]" 
-                      : "hover:scale-[1.02]"
-                  }`}
-                  style={{
-                    ["--tw-ring-color" as string]: selectedGalleryImage === image ? "rgb(100 116 139)" : undefined
-                  }}
-                >
-                  <img
-                    src={image || "/placeholder.svg"}
-                    alt={`${character.name} gallery ${index + 1}`}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className={`absolute inset-0 transition-colors ${
-                    selectedGalleryImage === image ? "bg-black/30" : "bg-black/0 group-hover:bg-black/20"
-                  }`} />
-                </button>
-              ))}
-            </div>
-
-            {/* Inline Image Preview */}
-            {selectedGalleryImage && (
-              <div 
-                className="mt-6 animate-in fade-in slide-in-from-bottom-4 duration-300"
-              >
-                <div className="relative rounded-xl overflow-hidden bg-slate-900">
-                  <img
-                    src={selectedGalleryImage || "/placeholder.svg"}
-                    alt="Gallery preview"
-                    className="w-full h-auto max-h-[70vh] object-contain mx-auto"
-                  />
-                </div>
-                <button
-                  onClick={() => setSelectedGalleryImage(null)}
-                  className={`mt-4 mx-auto block text-sm ${themeClasses.accent} hover:opacity-70 transition-opacity`}
-                >
-                  Tutup preview
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Back to Series Link */}
-        <div className="text-center mt-8">
-          <button
-            onClick={onBack}
-            className={`inline-flex items-center gap-2 ${themeClasses.accent} hover:opacity-80 font-medium transition-colors`}
+      {/* Divine Condition Modal */}
+      {showDivineModal && (
+        <div 
+          className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-6"
+          onClick={() => setShowDivineModal(null)}
+        >
+          <div 
+            className="modal-enter bg-zinc-900 border border-white/10 rounded-3xl max-w-lg w-full p-8"
+            onClick={(e) => e.stopPropagation()}
           >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Kembali ke {series.title}</span>
-          </button>
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                <div className="text-xs text-white/50 mb-1">Divine Condition</div>
+                <h3 className="text-2xl font-bold text-zinc-100">{DIVINE_CONDITION_INFO[showDivineModal].title}</h3>
+              </div>
+              <button 
+                onClick={() => setShowDivineModal(null)} 
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <p className="text-white/80 leading-relaxed">
+              {DIVINE_CONDITION_INFO[showDivineModal].description}
+            </p>
+            <button 
+              onClick={() => setShowDivineModal(null)} 
+              className="mt-6 w-full py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white/80 hover:text-white text-sm font-medium transition-colors"
+            >
+              Tutup
+            </button>
+          </div>
         </div>
-      </main>
+      )}
     </div>
   )
 }

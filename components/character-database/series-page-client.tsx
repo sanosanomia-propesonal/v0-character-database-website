@@ -24,6 +24,10 @@ export function SeriesPageClient({ seriesId }: Props) {
     [router, seriesId]
   )
 
+  const handleNavigateToPowerSystem = useCallback(() => {
+    router.push("/power-system")
+  }, [router])
+
   if (!series) return null
 
   return (
@@ -31,6 +35,7 @@ export function SeriesPageClient({ seriesId }: Props) {
       series={series}
       onBack={handleBack}
       onSelectCharacter={handleSelectCharacter}
+      onNavigateToPowerSystem={handleNavigateToPowerSystem}
     />
   )
 }

@@ -1,17 +1,17 @@
 "use client"
 
-import { Series, Character } from "@/lib/character-data"
-import { ArrowLeft, ChevronRight, Clock } from "lucide-react"
+import { Series } from "@/lib/character-data"
+import { ArrowLeft, Bolt, Info, Clock } from "lucide-react"
 import { useState, useMemo } from "react"
-import { ThemeToggle } from "@/components/theme-toggle"
 
 interface SeriesViewProps {
   series: Series
   onBack: () => void
   onSelectCharacter: (characterId: string) => void
+  onNavigateToPowerSystem?: () => void
 }
 
-// Age tier configuration for Fallen: The Beginning
+// Age tier configuration for Schism: The Beginning
 interface AgeTier {
   label: string
   description: string
@@ -29,6 +29,7 @@ export function SeriesView({
   series,
   onBack,
   onSelectCharacter,
+  onNavigateToPowerSystem,
 }: SeriesViewProps) {
   const [clickedCharacterId, setClickedCharacterId] = useState<string | null>(null)
 
@@ -40,8 +41,21 @@ export function SeriesView({
     }, 300)
   }
 
-  // Dynamic theme classes based on series
-  const themeClasses = series.themeColors
+  // Get series badge info
+  const getSeriesBadge = () => {
+    switch (series.id) {
+      case "schism-termina":
+        return { label: "MAIN TIMELINE", color: "bg-emerald-600" }
+      case "schism-the-beginning":
+        return { label: "PREQUEL", color: "bg-amber-600" }
+      case "schism-hell":
+        return { label: "MYSTERY", color: "bg-red-600" }
+      default:
+        return { label: "SERIES", color: "bg-zinc-600" }
+    }
+  }
+
+  const badge = getSeriesBadge()
 
   // Check if this is the Schism: The Beginning series for special layout
   const isBeginningSeriesLayout = series.id === "schism-the-beginning"
@@ -63,212 +77,135 @@ export function SeriesView({
   }, [series.characters, isBeginningSeriesLayout])
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
-      {/* Header with gradient */}
-      <header className={`relative bg-gradient-to-r ${themeClasses.primary} pt-6 pb-32 px-4`}>
-        <div className="container mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center">
-                <img src="/favicon.png" alt="Schism Base" className="w-10 h-10 object-cover" />
-              </div>
-              <div>
-                <h1 className="text-white font-bold text-lg">{series.title}</h1>
-                <p className="text-white/80 text-sm">Schism Base</p>
-              </div>
+    <div className="min-h-screen bg-[#0a0a0b]">
+      {/* Navbar */}
+      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#0a0a0b]/95 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Brand */}
+            <div className="flex items-center gap-x-3">
+              <span onClick={onBack} className="font-bold text-2xl tracking-[-1.5px] cursor-pointer text-zinc-100">SCHISM BASE</span>
+              <span className="text-[10px] px-2 py-0.5 rounded bg-white/5 text-white/40 font-mono tracking-widest">v2</span>
             </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={onBack}
-                className="flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                <span>Kembali</span>
-              </button>
-              <ThemeToggle />
-            </div>
-          </div>
 
-          <div className="text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
-              {series.title}
-            </h2>
-            <p className="text-sm leading-5 text-white">List Karakter (belom full update)</p>
+            {/* Nav Links */}
+            <div className="hidden md:flex items-center gap-x-8 text-sm">
+              <button onClick={onBack} className="nav-link px-3 py-1.5 text-white/70 hover:text-white font-medium">Beranda</button>
+              <button className="nav-link active px-3 py-1.5 text-white font-medium">Series</button>
+              {onNavigateToPowerSystem && (
+                <button onClick={onNavigateToPowerSystem} className="nav-link px-3 py-1.5 text-white/70 hover:text-white font-medium">Power System</button>
+              )}
+            </div>
+
+            <button 
+              onClick={onBack} 
+              className="text-sm flex items-center gap-x-2 px-5 py-2.5 rounded-full border border-white/10 hover:bg-white/5 text-zinc-300"
+            >
+              <ArrowLeft className="w-4 h-4 mr-1" /> Kembali ke Series
+            </button>
           </div>
         </div>
-      </header>
+      </nav>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 -mt-20">
-        {/* About Section */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 md:p-8 mb-8">
-          <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">
-            Tentang {series.title}
-          </h3>
-          <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-sans font-semibold py-5 my-0 mx-0 px-0 mt-5 pt-10 leading-10">{series.description}</p>
+      {/* Series Detail View */}
+      <div className="max-w-7xl mx-auto px-8 pb-20 pt-8">
+        {/* Header */}
+        <div className="mb-10">
+          <span className={`series-badge ${badge.color} text-white`}>{badge.label}</span>
+          <h2 className="text-4xl font-bold tracking-tight mt-3 text-zinc-100">{series.title}</h2>
+          <p className="text-white/60 mt-2 max-w-2xl">{series.description}</p>
         </div>
-
-        {/* Characters Section */}
-        <div className="mb-12">
-          <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-6">
-            Karakter Utama
-          </h3>
-
-          {/* Special layout for Fallen: The Beginning - grouped by age tiers */}
-          {isBeginningSeriesLayout && charactersByAgeTier ? (
-            <div className="space-y-10">
-              {charactersByAgeTier.map((tier, tierIndex) => (
-                <div key={tier.label}>
-                  {/* Tier Header */}
-                  <div className="flex items-center gap-3 mb-5">
-                    <div className={`w-10 h-10 ${themeClasses.light} rounded-lg flex items-center justify-center`}>
-                      <Clock className={`w-5 h-5 ${themeClasses.accent}`} />
-                    </div>
-                    <div>
-                      <h4 className="text-lg font-bold text-slate-800 dark:text-slate-100">{tier.label}</h4>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">{tier.description}</p>
-                    </div>
-                    <div className="flex-1 h-px bg-slate-200 dark:bg-slate-700 ml-4" />
+        
+        {/* Characters Grid */}
+        {isBeginningSeriesLayout && charactersByAgeTier ? (
+          <div className="space-y-12">
+            {charactersByAgeTier.map((tier) => (
+              <div key={tier.label}>
+                {/* Tier Header */}
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center border border-white/10">
+                    <Clock className="w-5 h-5 text-rose-400" />
                   </div>
+                  <div>
+                    <h4 className="text-lg font-bold text-zinc-100">{tier.label}</h4>
+                    <p className="text-sm text-white/50">{tier.description}</p>
+                  </div>
+                  <div className="flex-1 h-px bg-white/10 ml-4" />
+                </div>
 
-                  {/* Characters Grid - adaptive layout based on count */}
-                  <div className={`grid gap-6 ${
-                    tier.characters.length === 1 
-                      ? "grid-cols-1 max-w-md mx-auto" 
-                      : tier.characters.length === 2 
-                      ? "grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto"
-                      : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-                  }`}>
-                    {tier.characters.map((character, charIndex) => (
-                      <div
-                        key={character.id}
-                        onClick={() => handleCharacterClick(character.id)}
-                        className={`bg-white dark:bg-slate-800 rounded-2xl shadow-lg overflow-hidden group cursor-pointer transition-all duration-300 ${
-                          clickedCharacterId === character.id
-                            ? "scale-95 opacity-80"
-                            : "hover:shadow-xl hover:scale-[1.02]"
-                        } ${tierIndex === 0 ? "ring-2 ring-blue-200 dark:ring-blue-800" : ""}`}
-                      >
-                        {/* Character Image */}
-                        <div className="relative aspect-square bg-gradient-to-br from-slate-700 to-slate-800">
-                          <img
-                            src={character.thumbnailImage || "/placeholder.svg"}
-                            alt={character.name}
-                            className="absolute inset-0 w-full h-full object-cover"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                          
-                          {/* Age Badge */}
-                          <div className="absolute top-4 right-4">
-                            <span className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-black/50 text-white backdrop-blur-sm opacity-0">
-                              {character.details.age.toLocaleString()} tahun
-                            </span>
-                          </div>
-                          
-                          {/* Role Badge */}
-                          <div className="absolute bottom-4 left-4">
-                            <span
-                              className={`inline-block px-3 py-1 text-xs font-medium rounded-full ${
-                                character.role === "Protagonist"
-                                  ? `${themeClasses.secondary} text-white`
-                                  : character.role === "Alomani"
-                                  ? "bg-red-500 text-white"
-                                  : character.role === "Antagonist"
-                                  ? "bg-purple-700 text-white"
-                                  : "bg-slate-500 text-white"
-                              }`}
-                            >
-                              {character.role}
-                            </span>
-                          </div>
-                          {clickedCharacterId === character.id && (
-                            <div className="absolute inset-0 bg-white/30 animate-pulse" />
-                          )}
-                        </div>
-
-                        {/* Character Info */}
-                        <div className="p-6">
-                          <h4 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">
-                            {character.name}
-                          </h4>
-                          <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3">
-                            {character.shortDescription}
-                          </p>
-                          <div
-                            className={`flex items-center gap-2 ${themeClasses.accent} hover:opacity-80 font-medium text-lg sm:text-xl transition-colors group/btn`}
-                          >
-                            <span>Lihat Detail</span>
-                            <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                          </div>
+                {/* Characters */}
+                <div className={`grid gap-6 ${
+                  tier.characters.length === 1 
+                    ? "grid-cols-1 max-w-md" 
+                    : tier.characters.length === 2 
+                    ? "grid-cols-1 md:grid-cols-2 max-w-3xl"
+                    : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                }`}>
+                  {tier.characters.map((character) => (
+                    <div 
+                      key={character.id}
+                      onClick={() => handleCharacterClick(character.id)}
+                      className={`character-card cursor-pointer rounded-2xl border border-white/10 bg-zinc-900 overflow-hidden group ${
+                        clickedCharacterId === character.id ? "scale-95 opacity-80" : ""
+                      }`}
+                    >
+                      <div className="h-40 relative">
+                        <img 
+                          src={character.thumbnailImage || "/placeholder.svg"} 
+                          alt={character.name} 
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black/80"></div>
+                        <div className="absolute bottom-4 left-4 right-4">
+                          <div className="text-xs px-2.5 py-0.5 w-fit rounded bg-black/60 text-white/90 mb-1">{character.role}</div>
+                          <div className="font-semibold text-xl tracking-tight text-white">{character.name}</div>
                         </div>
                       </div>
-                    ))}
+                      <div className="p-5 text-sm">
+                        <p className="text-white/70 line-clamp-3">{character.shortDescription}</p>
+                        <div className="mt-4 text-xs flex justify-end">
+                          <span className="text-rose-400 group-hover:underline">Lihat Detail →</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {series.characters.map((character) => (
+              <div 
+                key={character.id}
+                onClick={() => handleCharacterClick(character.id)}
+                className={`character-card cursor-pointer rounded-2xl border border-white/10 bg-zinc-900 overflow-hidden group ${
+                  clickedCharacterId === character.id ? "scale-95 opacity-80" : ""
+                }`}
+              >
+                <div className="h-40 relative">
+                  <img 
+                    src={character.thumbnailImage || "/placeholder.svg"} 
+                    alt={character.name} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black/80"></div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <div className="text-xs px-2.5 py-0.5 w-fit rounded bg-black/60 text-white/90 mb-1">{character.role}</div>
+                    <div className="font-semibold text-xl tracking-tight text-white">{character.name}</div>
                   </div>
                 </div>
-              ))}
-            </div>
-          ) : (
-            /* Default layout for other series */
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {series.characters.map((character) => (
-                <div
-                  key={character.id}
-                  onClick={() => handleCharacterClick(character.id)}
-                  className={`bg-white dark:bg-slate-800 rounded-2xl shadow-lg overflow-hidden group cursor-pointer transition-all duration-300 ${
-                    clickedCharacterId === character.id
-                      ? "scale-95 opacity-80"
-                      : "hover:shadow-xl hover:scale-[1.02]"
-                  }`}
-                >
-                  {/* Character Image */}
-                  <div className="relative aspect-square bg-gradient-to-br from-slate-700 to-slate-800">
-                    <img
-                      src={character.thumbnailImage || "/placeholder.svg"}
-                      alt={character.name}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div className="absolute bottom-4 left-4">
-                      <span
-                        className={`inline-block px-3 py-1 text-xs font-medium rounded-full ${
-                          character.role === "Protagonist"
-                            ? `${themeClasses.secondary} text-white`
-                            : character.role === "Alomani"
-                            ? "bg-red-500 text-white"
-                            : character.role === "Antagonist"
-                            ? "bg-purple-700 text-white"
-                            : "bg-slate-500 text-white"
-                        }`}
-                      >
-                        {character.role}
-                      </span>
-                    </div>
-                    {clickedCharacterId === character.id && (
-                      <div className="absolute inset-0 bg-white/30 animate-pulse" />
-                    )}
-                  </div>
-
-                  {/* Character Info */}
-                  <div className="p-6">
-                    <h4 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">
-                      {character.name}
-                    </h4>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3">
-                      {character.shortDescription}
-                    </p>
-                    <div
-                      className={`flex items-center gap-2 ${themeClasses.accent} hover:opacity-80 font-medium text-lg sm:text-xl transition-colors group/btn`}
-                    >
-                      <span>Lihat Detail</span>
-                      <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                    </div>
+                <div className="p-5 text-sm">
+                  <p className="text-white/70 line-clamp-3">{character.shortDescription}</p>
+                  <div className="mt-4 text-xs flex justify-end">
+                    <span className="text-rose-400 group-hover:underline">Lihat Detail →</span>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </main>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
