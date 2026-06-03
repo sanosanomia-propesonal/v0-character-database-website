@@ -1,12 +1,20 @@
 import React from "react"
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter, Playfair_Display } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const inter = Inter({ 
+  subsets: ["latin"],
+  variable: '--font-inter',
+})
+
+const playfair = Playfair_Display({ 
+  subsets: ["latin"],
+  weight: ['700'],
+  variable: '--font-playfair',
+})
 
 export const metadata: Metadata = {
   title: {
@@ -80,12 +88,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="id" suppressHydrationWarning>
-      <body className={`font-sans antialiased`}>
+    <html lang="id" suppressHydrationWarning className={`${inter.variable} ${playfair.variable} bg-[#0a0a0b]`}>
+      <body className="font-sans antialiased bg-[#0a0a0b] text-zinc-200">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="dark"
+          enableSystem={false}
           disableTransitionOnChange={false}
         >
           {children}
